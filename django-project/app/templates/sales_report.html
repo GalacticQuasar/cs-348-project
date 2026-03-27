@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+    <style>
+        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f5f7fb; margin: 0; }
+        .wrap { max-width: 1100px; margin: 28px auto; padding: 0 16px; }
+        .panel { background: #fff; border: 1px solid #dee6f4; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .filter-grid { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 24px; }
+        .filter-column { display: grid; gap: 10px; }
+        label { display: block; font-weight: 700; margin-bottom: 4px; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #bcc9df; border-radius: 8px; }
+        button, a { padding: 9px 12px; border-radius: 8px; border: 0; text-decoration: none; }
+        button { background: #2e4e9c; color: #fff; cursor: pointer; }
+        a { background: #dce4f8; color: #1f3160; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border-bottom: 1px solid #e6ebf7; padding: 10px; text-align: left; }
+        th { background: #edf2ff; }
+        .stats { display: flex; flex-wrap: wrap; gap: 14px; }
+        .stat { background: #edf2ff; border-radius: 10px; padding: 10px 12px; min-width: 180px; }
+        h2 { margin-top: 0; }
+
+        @media (max-width: 700px) {
+            .filter-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>Sales Report</h1>
+
+        <div class="panel">
+            <form method="get">
+                <div class="filter-grid">
+                    <div class="filter-column">
+                        <div>
+                            <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                            {{ form.start_date }}
+                        </div>
+                        <div>
+                            <label for="{{ form.end_date.id_for_label }}">End Date</label>
+                            {{ form.end_date }}
+                        </div>
+                    </div>
+                    <div class="filter-column">
+                        <div>
+                            <label for="{{ form.salesperson.id_for_label }}">Salesperson</label>
+                            {{ form.salesperson }}
+                        </div>
+                        <div>
+                            <label for="{{ form.brand.id_for_label }}">Brand</label>
+                            {{ form.brand }}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:12px; display:flex; gap:10px;">
+                    <button type="submit">Apply Filters</button>
+                    <a href="{% url 'sales_report' %}">Reset</a>
+                    <a href="{% url 'sales_list' %}">Back to Sales</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <h2>Aggregate Statistics</h2>
+            <div class="stats">
+                <div class="stat">
+                    <strong>Total Sales Amount</strong><br>
+                    ${{ stats.total_sales_amount|default:0 }}
+                </div>
+                <div class="stat">
+                    <strong>Average Sale Price</strong><br>
+                    ${{ stats.average_sale_price|default:0 }}
+                </div>
+                <div class="stat">
+                    <strong>Total Number of Sales</strong><br>
+                    {{ stats.total_number_of_sales|default:0 }}
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Brand Breakdown</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Brand</th>
+                        <th>Sales Count</th>
+                        <th>Total Amount</th>
+                        <th>Average Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in brand_breakdown %}
+                        <tr>
+                            <td>{{ row.car_model__brand__name }}</td>
+                            <td>{{ row.sales_count }}</td>
+                            <td>${{ row.brand_total|default:0 }}</td>
+                            <td>${{ row.brand_average|default:0 }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No matching rows for current filters.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <h2>Matching Sales</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Salesperson</th>
+                        <th>Customer</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Sale Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                        <tr>
+                            <td>{{ sale.id }}</td>
+                            <td>{{ sale.date }}</td>
+                            <td>{{ sale.salesperson }}</td>
+                            <td>{{ sale.customer }}</td>
+                            <td>{{ sale.car_model.brand.name }}</td>
+                            <td>{{ sale.car_model.model_name }}</td>
+                            <td>${{ sale.sale_price }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">No sales match the selected filters.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

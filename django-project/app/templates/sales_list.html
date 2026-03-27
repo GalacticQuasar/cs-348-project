@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales List</title>
+    <style>
+        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f7fbfb; margin: 0; }
+        .wrap { max-width: 1100px; margin: 32px auto; padding: 0 16px; }
+        .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        a.button { text-decoration: none; background: #0b5c5e; color: #fff; padding: 8px 12px; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
+        th, td { padding: 10px 12px; border-bottom: 1px solid #e4ecec; text-align: left; }
+        th { background: #e6f1f0; }
+        .actions a { margin-right: 8px; }
+        .msg { background: #dff3e5; color: #123a1e; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="top">
+            <h1>Sales Records</h1>
+            <div>
+                <a class="button" href="{% url 'sales_create' %}">Add Sale</a>
+                <a class="button" href="{% url 'sales_report' %}">Open Report</a>
+                <a class="button" href="{% url 'index' %}">Home</a>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="msg">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <table>  <!-- table listing sales with actions to edit/delete -->
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Salesperson</th>
+                    <th>Customer</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Sale Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.id }}</td>
+                        <td>{{ sale.date }}</td>
+                        <td>{{ sale.salesperson }}</td>
+                        <td>{{ sale.customer }}</td>
+                        <td>{{ sale.car_model.brand.name }}</td>
+                        <td>{{ sale.car_model.model_name }}</td>
+                        <td>${{ sale.sale_price }}</td>
+                        <td class="actions">
+                            <a href="{% url 'sales_edit' sale.id %}">Edit</a>
+                            <a href="{% url 'sales_delete' sale.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No sales found. Add your first sale.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

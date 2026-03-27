@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Sale</title>
+    <style>
+        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f9f7f7; margin: 0; }
+        .wrap { max-width: 680px; margin: 40px auto; padding: 0 16px; }
+        .card { background: #fff; border: 1px solid #ead9d9; border-radius: 12px; padding: 20px; }
+        .actions { margin-top: 14px; display: flex; gap: 10px; }
+        button, a { padding: 9px 14px; border-radius: 8px; text-decoration: none; border: 0; cursor: pointer; }
+        button { background: #8b1d1d; color: #fff; }
+        a { background: #ece6e6; color: #3a2020; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="card">
+            <h1>Delete Sale #{{ sale.id }}</h1>
+            <p>
+                Are you sure you want to delete this sale for {{ sale.customer }}
+                ({{ sale.car_model.brand.name }} {{ sale.car_model.model_name }})?
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="actions">
+                    <button type="submit">Yes, Delete</button>
+                    <a href="{% url 'sales_list' %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

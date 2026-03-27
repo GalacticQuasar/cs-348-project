@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <style>
+        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f5faf9; margin: 0; }
+        .wrap { max-width: 760px; margin: 32px auto; padding: 0 16px; }
+        form { background: #fff; border: 1px solid #deebea; border-radius: 12px; padding: 20px; }
+        .row { margin-bottom: 12px; }
+        label { display: block; font-weight: 700; margin-bottom: 4px; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #b9cdca; border-radius: 8px; }
+        .actions { display: flex; gap: 10px; margin-top: 14px; }
+        button, a { padding: 9px 14px; border-radius: 8px; text-decoration: none; border: 0; cursor: pointer; }
+        button { background: #0d6466; color: #fff; }
+        a { background: #dce8e7; color: #15393a; }
+        .errors { color: #7f1d1d; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>{{ page_title }}</h1>
+
+        {% if form.errors %}
+            <div class="errors">Please correct the errors below.</div>
+        {% endif %}
+
+        <form method="post">  <!-- form for creating/editing a sale -->
+            {% csrf_token %}
+
+            <div class="row">
+                <label for="{{ form.date.id_for_label }}">Date</label>
+                {{ form.date }}
+                {{ form.date.errors }}
+            </div>
+
+            <div class="row">
+                <label for="{{ form.salesperson.id_for_label }}">Salesperson</label>
+                {{ form.salesperson }}
+                {{ form.salesperson.errors }}
+            </div>
+
+            <div class="row">
+                <label for="{{ form.customer.id_for_label }}">Customer</label>
+                {{ form.customer }}
+                {{ form.customer.errors }}
+            </div>
+
+            <div class="row">
+                <label for="{{ form.brand.id_for_label }}">Brand</label>
+                {{ form.brand }}
+                {{ form.brand.errors }}
+            </div>
+
+            <div class="row">
+                <label for="{{ form.car_model.id_for_label }}">Model</label>
+                {{ form.car_model }}
+                {{ form.car_model.errors }}
+            </div>
+
+            <div class="row">
+                <label for="{{ form.sale_price.id_for_label }}">Sale Price</label>
+                {{ form.sale_price }}
+                {{ form.sale_price.errors }}
+            </div>
+
+            <div class="actions">
+                <button type="submit">Save</button>
+                <a href="{% url 'sales_list' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const brandSelect = document.getElementById("id_brand");
+        const modelSelect = document.getElementById("id_car_model");
+
+        async function refreshModels() {  // fetch and update the car model options based on the selected brand
+            const brandId = brandSelect.value;
+            modelSelect.innerHTML = "";
+
+            const blankOption = document.createElement("option");
+            blankOption.value = "";
+            blankOption.textContent = "---------";
+            modelSelect.appendChild(blankOption);
+
+            if (!brandId) {
+                return;
+            }
+
+            const response = await fetch(`{% url 'car_models_by_brand' %}?brand_id=${brandId}`);
+            const data = await response.json();
+
+            data.models.forEach((item) => {
+                const option = document.createElement("option");
+                option.value = item.id;
+                option.textContent = item.name;
+                modelSelect.appendChild(option);
+            });
+        }
+
+        brandSelect.addEventListener("change", refreshModels);  // trigger car model refresh on brand selection change
+    </script>
+</body>
+</html>
