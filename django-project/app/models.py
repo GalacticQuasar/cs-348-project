@@ -65,6 +65,7 @@ class Sale(models.Model):
 			models.Index(fields=["date"]),
 			models.Index(fields=["salesperson", "date"]),
 			models.Index(fields=["car_model"]),
+			models.Index(fields=["car_model", "date"]),  # add composite index for car_model and date to speed up report queries that filter by both
 		]
 
 	def __str__(self):
