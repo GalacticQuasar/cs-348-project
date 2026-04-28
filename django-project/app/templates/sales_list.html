@@ -5,25 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales List</title>
     <style>
-        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f7fbfb; margin: 0; }
-        .wrap { max-width: 1100px; margin: 32px auto; padding: 0 16px; }
-        .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        a.button { text-decoration: none; background: #0b5c5e; color: #fff; padding: 8px 12px; border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
-        th, td { padding: 10px 12px; border-bottom: 1px solid #e4ecec; text-align: left; }
-        th { background: #e6f1f0; }
-        .actions a { margin-right: 8px; }
-        .msg { background: #dff3e5; color: #123a1e; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+        :root {
+            --bg-deep: #1a0808;
+            --bg-card: #2d1515;
+            --maroon: #4a1f1f;
+            --maroon-light: #6b2c2c;
+            --leather: #8b5a3c;
+            --leather-light: #a67052;
+            --cream: #e8d4c4;
+            --cream-muted: #c4a88a;
+            --gold: #c9a456;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            background: var(--bg-deep);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(74, 31, 31, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 90, 60, 0.2) 0%, transparent 50%);
+            margin: 0;
+            color: var(--cream);
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--maroon);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        a.button {
+            text-decoration: none;
+            background: var(--maroon);
+            color: var(--cream);
+            padding: 10px 16px;
+            border-radius: 2px;
+            font-size: 0.85rem;
+            border: 1px solid var(--maroon-light);
+            letter-spacing: 0.02em;
+        }
+
+        a.button:hover {
+            background: var(--maroon-light);
+            border-color: var(--leather);
+        }
+
+        a.button.secondary {
+            background: transparent;
+            border-color: var(--leather);
+            color: var(--leather-light);
+        }
+
+        a.button.secondary:hover {
+            background: rgba(139, 90, 60, 0.15);
+            color: var(--cream);
+        }
+
+        .msg {
+            background: rgba(74, 31, 31, 0.6);
+            color: var(--cream);
+            padding: 12px 16px;
+            border-radius: 2px;
+            margin-bottom: 16px;
+            border-left: 3px solid var(--leather);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--maroon);
+        }
+
+        th {
+            background: var(--maroon);
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 400;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            border-bottom: 1px solid var(--maroon-light);
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(74, 31, 31, 0.5);
+            font-size: 0.9rem;
+            color: var(--cream);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(74, 31, 31, 0.2);
+        }
+
+        .actions a {
+            text-decoration: none;
+            color: var(--leather-light);
+            font-size: 0.8rem;
+            margin-right: 12px;
+            letter-spacing: 0.02em;
+        }
+
+        .actions a:hover {
+            color: var(--gold);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 48px;
+            color: var(--cream-muted);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="wrap">
         <div class="top">
             <h1>Sales Records</h1>
-            <div>
+            <div class="nav-links">
+                <a class="button secondary" href="{% url 'index' %}">Home</a>
+                <a class="button secondary" href="{% url 'sales_report' %}">Open Report</a>
                 <a class="button" href="{% url 'sales_create' %}">Add Sale</a>
-                <a class="button" href="{% url 'sales_report' %}">Open Report</a>
-                <a class="button" href="{% url 'index' %}">Home</a>
             </div>
         </div>
 
@@ -63,7 +196,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="8">No sales found. Add your first sale.</td>
+                        <td colspan="8" class="empty">No sales found. Add your first sale.</td>
                     </tr>
                 {% endfor %}
             </tbody>

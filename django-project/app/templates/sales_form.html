@@ -5,17 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page_title }}</title>
     <style>
-        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f5faf9; margin: 0; }
-        .wrap { max-width: 760px; margin: 32px auto; padding: 0 16px; }
-        form { background: #fff; border: 1px solid #deebea; border-radius: 12px; padding: 20px; }
-        .row { margin-bottom: 12px; }
-        label { display: block; font-weight: 700; margin-bottom: 4px; }
-        input, select { width: 100%; max-width: 100%; padding: 8px; border: 1px solid #b9cdca; border-radius: 8px; box-sizing: border-box; }
-        .actions { display: flex; gap: 10px; margin-top: 14px; }
-        button, a { padding: 9px 14px; border-radius: 8px; text-decoration: none; border: 0; cursor: pointer; }
-        button { background: #0d6466; color: #fff; }
-        a { background: #dce8e7; color: #15393a; }
-        .errors { color: #7f1d1d; margin-bottom: 10px; }
+        :root {
+            --bg-deep: #1a0808;
+            --bg-card: #2d1515;
+            --maroon: #4a1f1f;
+            --maroon-light: #6b2c2c;
+            --leather: #8b5a3c;
+            --leather-light: #a67052;
+            --cream: #e8d4c4;
+            --cream-muted: #c4a88a;
+            --gold: #c9a456;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            background: var(--bg-deep);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(74, 31, 31, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 90, 60, 0.2) 0%, transparent 50%);
+            margin: 0;
+            color: var(--cream);
+        }
+
+        .wrap {
+            max-width: 760px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin: 0 0 24px 0;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        form {
+            background: var(--bg-card);
+            border: 1px solid var(--maroon);
+            border-radius: 4px;
+            padding: 28px;
+        }
+
+        .row {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--maroon-light);
+            border-radius: 2px;
+            background: rgba(26, 8, 8, 0.6);
+            color: var(--cream);
+            font-family: inherit;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--leather);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        button, a {
+            padding: 10px 18px;
+            border-radius: 2px;
+            text-decoration: none;
+            border: 1px solid;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        button {
+            background: var(--maroon);
+            color: var(--cream);
+            border-color: var(--maroon-light);
+        }
+
+        button:hover {
+            background: var(--maroon-light);
+            border-color: var(--leather);
+        }
+
+        a {
+            background: transparent;
+            color: var(--leather-light);
+            border-color: var(--leather);
+        }
+
+        a:hover {
+            background: rgba(139, 90, 60, 0.15);
+            color: var(--cream);
+        }
+
+        .errors {
+            color: #d46a6a;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>

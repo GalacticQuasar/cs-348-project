@@ -5,22 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Report</title>
     <style>
-        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f5f7fb; margin: 0; }
-        .wrap { max-width: 1100px; margin: 28px auto; padding: 0 16px; }
-        .panel { background: #fff; border: 1px solid #dee6f4; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-        .filter-grid { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 24px; }
-        .filter-column { display: grid; gap: 10px; }
-        label { display: block; font-weight: 700; margin-bottom: 4px; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #bcc9df; border-radius: 8px; }
-        button, a { padding: 9px 12px; border-radius: 8px; border: 0; text-decoration: none; }
-        button { background: #2e4e9c; color: #fff; cursor: pointer; }
-        a { background: #dce4f8; color: #1f3160; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border-bottom: 1px solid #e6ebf7; padding: 10px; text-align: left; }
-        th { background: #edf2ff; }
-        .stats { display: flex; flex-wrap: wrap; gap: 14px; }
-        .stat { background: #edf2ff; border-radius: 10px; padding: 10px 12px; min-width: 180px; }
-        h2 { margin-top: 0; }
+        :root {
+            --bg-deep: #1a0808;
+            --bg-card: #2d1515;
+            --maroon: #4a1f1f;
+            --maroon-light: #6b2c2c;
+            --leather: #8b5a3c;
+            --leather-light: #a67052;
+            --cream: #e8d4c4;
+            --cream-muted: #c4a88a;
+            --gold: #c9a456;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            background: var(--bg-deep);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(74, 31, 31, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 90, 60, 0.2) 0%, transparent 50%);
+            margin: 0;
+            color: var(--cream);
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin: 0 0 24px 0;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        h2 {
+            margin: 0 0 16px 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--maroon);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .filter-column {
+            display: grid;
+            gap: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            margin-bottom: 4px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--maroon-light);
+            border-radius: 2px;
+            background: rgba(26, 8, 8, 0.6);
+            color: var(--cream);
+            font-family: inherit;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--leather);
+        }
+
+        .filter-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button, a {
+            padding: 9px 14px;
+            border-radius: 2px;
+            border: 1px solid;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+        }
+
+        button {
+            background: var(--maroon);
+            color: var(--cream);
+            border-color: var(--maroon-light);
+        }
+
+        button:hover {
+            background: var(--maroon-light);
+            border-color: var(--leather);
+        }
+
+        a {
+            background: transparent;
+            color: var(--leather-light);
+            border-color: var(--leather);
+        }
+
+        a:hover {
+            background: rgba(139, 90, 60, 0.15);
+            color: var(--cream);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border-bottom: 1px solid rgba(74, 31, 31, 0.5);
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--maroon);
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            font-weight: 400;
+        }
+
+        td {
+            color: var(--cream);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(74, 31, 31, 0.15);
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stat {
+            background: rgba(74, 31, 31, 0.4);
+            border: 1px solid var(--maroon);
+            border-radius: 2px;
+            padding: 14px 16px;
+            min-width: 180px;
+            font-size: 0.9rem;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            margin-bottom: 4px;
+            font-weight: 400;
+        }
+
+        .stat span {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 24px;
+            color: var(--cream-muted);
+            font-style: italic;
+        }
 
         @media (max-width: 700px) {
             .filter-grid { grid-template-columns: 1fr; }
@@ -55,7 +238,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-top:12px; display:flex; gap:10px;">
+                <div class="filter-actions">
                     <button type="submit">Apply Filters</button>
                     <a href="{% url 'sales_report' %}">Reset</a>
                     <a href="{% url 'sales_list' %}">Back to Sales</a>
@@ -67,16 +250,16 @@
             <h2>Aggregate Statistics</h2>
             <div class="stats">
                 <div class="stat">
-                    <strong>Total Sales Amount</strong><br>
-                    ${{ stats.total_sales_amount|default:0 }}
+                    <strong>Total Sales Amount</strong>
+                    <span>${{ stats.total_sales_amount|default:0 }}</span>
                 </div>
                 <div class="stat">
-                    <strong>Average Sale Price</strong><br>
-                    ${{ stats.average_sale_price|default:0 }}
+                    <strong>Average Sale Price</strong>
+                    <span>${{ stats.average_sale_price|default:0 }}</span>
                 </div>
                 <div class="stat">
-                    <strong>Total Number of Sales</strong><br>
-                    {{ stats.total_number_of_sales|default:0 }}
+                    <strong>Total Number of Sales</strong>
+                    <span>{{ stats.total_number_of_sales|default:0 }}</span>
                 </div>
             </div>
         </div>
@@ -102,7 +285,7 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="4">No matching rows for current filters.</td>
+                            <td colspan="4" class="empty">No matching rows for current filters.</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -136,7 +319,7 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="7">No sales match the selected filters.</td>
+                            <td colspan="7" class="empty">No sales match the selected filters.</td>
                         </tr>
                     {% endfor %}
                 </tbody>

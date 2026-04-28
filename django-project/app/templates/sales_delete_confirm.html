@@ -5,13 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Sale</title>
     <style>
-        body { font-family: "Trebuchet MS", Tahoma, sans-serif; background: #f9f7f7; margin: 0; }
-        .wrap { max-width: 680px; margin: 40px auto; padding: 0 16px; }
-        .card { background: #fff; border: 1px solid #ead9d9; border-radius: 12px; padding: 20px; }
-        .actions { margin-top: 14px; display: flex; gap: 10px; }
-        button, a { padding: 9px 14px; border-radius: 8px; text-decoration: none; border: 0; cursor: pointer; }
-        button { background: #8b1d1d; color: #fff; }
-        a { background: #ece6e6; color: #3a2020; }
+        :root {
+            --bg-deep: #1a0808;
+            --bg-card: #2d1515;
+            --maroon: #4a1f1f;
+            --maroon-light: #6b2c2c;
+            --leather: #8b5a3c;
+            --leather-light: #a67052;
+            --cream: #e8d4c4;
+            --cream-muted: #c4a88a;
+            --gold: #c9a456;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            background: var(--bg-deep);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(74, 31, 31, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 90, 60, 0.2) 0%, transparent 50%);
+            margin: 0;
+            color: var(--cream);
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+
+        .wrap {
+            max-width: 480px;
+            width: 92vw;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--maroon);
+            border-radius: 4px;
+            padding: 32px 28px;
+        }
+
+        h1 {
+            margin: 0 0 16px 0;
+            font-size: 1.35rem;
+            font-weight: 400;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        p {
+            margin: 0 0 24px 0;
+            color: var(--cream-muted);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button, a {
+            padding: 10px 18px;
+            border-radius: 2px;
+            text-decoration: none;
+            border: 1px solid;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        button {
+            background: #6b1f1f;
+            color: var(--cream);
+            border-color: #8b2c2c;
+        }
+
+        button:hover {
+            background: #8b2c2c;
+            border-color: var(--leather);
+        }
+
+        a {
+            background: transparent;
+            color: var(--leather-light);
+            border-color: var(--leather);
+        }
+
+        a:hover {
+            background: rgba(139, 90, 60, 0.15);
+            color: var(--cream);
+        }
     </style>
 </head>
 <body>
