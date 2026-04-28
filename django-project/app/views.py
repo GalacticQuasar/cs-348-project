@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import transaction
 from django.db.models import Avg, Count, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -24,7 +25,8 @@ def sales_create(request):
     if request.method == "POST":
         form = SaleForm(request.POST)
         if form.is_valid():
-            form.save()
+            with transaction.atomic():
+                form.save()
             messages.success(request, "Sale created successfully.")
             return redirect("sales_list")
     else:
@@ -39,7 +41,8 @@ def sales_edit(request, sale_id):
     if request.method == "POST":
         form = SaleForm(request.POST, instance=sale)
         if form.is_valid():
-            form.save()
+            with transaction.atomic():
+                form.save()
             messages.success(request, "Sale updated successfully.")
             return redirect("sales_list")
     else:
@@ -60,7 +63,8 @@ def sales_delete(request, sale_id):
     sale = get_object_or_404(Sale, pk=sale_id)
 
     if request.method == "POST":
-        sale.delete()
+        with transaction.atomic():
+            sale.delete()
         messages.success(request, "Sale deleted successfully.")
         return redirect("sales_list")
 
@@ -118,7 +122,15 @@ def sales_report(request):
 def car_models_by_brand(request):
     brand_id = request.GET.get("brand_id")
     if not brand_id:
-        return JsonResponse({"models": []})
+        return JsonResponse({"models": []}, status=400)
+
+    try:
+        brand_id = int(brand_id)
+    except (ValueError, TypeError):
+        return JsonResponse({"error": "Invalid brand_id: must be an integer."}, status=400)
+
+    if brand_id < 1:
+        return JsonResponse({"error": "Invalid brand_id: must be a positive integer."}, status=400)
 
     models_qs = CarModel.objects.filter(brand_id=brand_id).order_by("model_name")
     models_data = [{"id": model.id, "name": model.model_name} for model in models_qs]
