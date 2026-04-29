@@ -74,3 +74,17 @@ Notes:
 - One `SalesPerson` has many `Sale` records.
 - One `Customer` has many `Sale` records.
 
+## AI Usage
+
+What AI tools were used:
+- VSCode Copilot
+
+Tasks AI assisted with:
+- Generating CSS styles (including CSS color variables and layout design) across the website
+- Debugging Django forms and views (explaining error messages and suggesting fixes)
+- Creating sample data (like people names and car models)
+
+How I verified/modified the AI-generated output:
+- Reviewed and tested all AI-generated code
+- Verified suggestions against Django documentation
+- Fixed issues with AI-generated code when things failed or had errors
