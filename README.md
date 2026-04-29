@@ -66,6 +66,7 @@ Notes:
 	- `date`
 	- `(salesperson_id, date)`
 	- `car_model_id`
+	- `(car_model_id, date)`
 
 ### Relationship Summary
 
